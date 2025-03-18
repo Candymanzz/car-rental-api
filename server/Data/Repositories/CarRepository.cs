@@ -21,13 +21,13 @@ public class CarRepository : SaveChangesDb, IRepository<Car>, IDisposable
 
     public async Task Delete(int id)
     {
-        await _context.Cars.Where(c => c.Id == id).ExecuteDeleteAsync();
+        await _context.Cars.Where(c => c.CarId == id).ExecuteDeleteAsync();
         await Save(_context);
     }
 
     public async Task<Car?> Get(int id)
     {
-        return await _context.Cars.AsNoTracking().FirstOrDefaultAsync(c => c.Id == id);
+        return await _context.Cars.AsNoTracking().FirstOrDefaultAsync(c => c.CarId == id);
     }
 
     public async Task<List<Car>> GetAll()
@@ -37,7 +37,7 @@ public class CarRepository : SaveChangesDb, IRepository<Car>, IDisposable
 
     public async Task Update(int id, Car item)
     {
-        var existingCar = await _context.Cars.FirstOrDefaultAsync(c => c.Id == id);
+        var existingCar = await _context.Cars.FirstOrDefaultAsync(c => c.CarId == id);
 
         if (existingCar != null)
         {
