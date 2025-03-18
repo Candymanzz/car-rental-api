@@ -4,6 +4,7 @@ using AutoMapper;
 using server.Data;
 using server.DTOs;
 using server.Models;
+using server.Exceptions;
 
 namespace server.Controllers;
 
@@ -11,10 +12,10 @@ namespace server.Controllers;
 [Route("api/[controller]")]
 public class CustomersController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly CarRentalContext _context;
     private readonly IMapper _mapper;
 
-    public CustomersController(ApplicationDbContext context, IMapper mapper)
+    public CustomersController(CarRentalContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -25,7 +26,8 @@ public class CustomersController : ControllerBase
     public async Task<ActionResult<IEnumerable<CustomerDto>>> GetCustomers()
     {
         var customers = await _context.Customers.ToListAsync();
-        return _mapper.Map<IEnumerable<CustomerDto>>(customers).ToList();
+        var customerDtos = customers.Select(c => _mapper.Map<CustomerDto>(c)).ToList();
+        return customerDtos;
     }
 
     // GET: api/Customers/5
@@ -35,7 +37,7 @@ public class CustomersController : ControllerBase
         var customer = await _context.Customers.FindAsync(id);
         if (customer == null)
         {
-            return NotFound();
+            throw new CustomerNotFoundException($"Customer with ID {id} was not found.");
         }
 
         return _mapper.Map<CustomerDto>(customer);
@@ -60,7 +62,7 @@ public class CustomersController : ControllerBase
         var customer = await _context.Customers.FindAsync(id);
         if (customer == null)
         {
-            return NotFound();
+            throw new CustomerNotFoundException($"Customer with ID {id} was not found.");
         }
 
         _mapper.Map(updateCustomerDto, customer);
@@ -76,7 +78,7 @@ public class CustomersController : ControllerBase
         var customer = await _context.Customers.FindAsync(id);
         if (customer == null)
         {
-            return NotFound();
+            throw new CustomerNotFoundException($"Customer with ID {id} was not found.");
         }
 
         _context.Customers.Remove(customer);

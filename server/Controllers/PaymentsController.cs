@@ -4,6 +4,7 @@ using AutoMapper;
 using server.Data;
 using server.DTOs;
 using server.Models;
+using server.Exceptions;
 
 namespace server.Controllers;
 
@@ -11,10 +12,10 @@ namespace server.Controllers;
 [Route("api/[controller]")]
 public class PaymentsController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly CarRentalContext _context;
     private readonly IMapper _mapper;
 
-    public PaymentsController(ApplicationDbContext context, IMapper mapper)
+    public PaymentsController(CarRentalContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -40,7 +41,7 @@ public class PaymentsController : ControllerBase
 
         if (payment == null)
         {
-            return NotFound();
+            throw new PaymentNotFoundException($"Payment with ID {id} was not found.");
         }
 
         return _mapper.Map<PaymentDto>(payment);
@@ -65,7 +66,7 @@ public class PaymentsController : ControllerBase
         var payment = await _context.Payments.FindAsync(id);
         if (payment == null)
         {
-            return NotFound();
+            throw new PaymentNotFoundException($"Payment with ID {id} was not found.");
         }
 
         _mapper.Map(updatePaymentDto, payment);
@@ -81,7 +82,7 @@ public class PaymentsController : ControllerBase
         var payment = await _context.Payments.FindAsync(id);
         if (payment == null)
         {
-            return NotFound();
+            throw new PaymentNotFoundException($"Payment with ID {id} was not found.");
         }
 
         _context.Payments.Remove(payment);

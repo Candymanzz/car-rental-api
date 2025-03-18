@@ -51,7 +51,7 @@ public class CarsController : ControllerBase
         await _context.SaveChangesAsync();
 
         var carDto = _mapper.Map<CarDto>(car);
-        return CreatedAtAction(nameof(GetCar), new { id = car.Id }, carDto);
+        return CreatedAtAction(nameof(GetCar), new { id = car.CarId }, carDto);
     }
 
     // PUT: api/Cars/5

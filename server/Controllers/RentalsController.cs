@@ -4,6 +4,7 @@ using AutoMapper;
 using server.Data;
 using server.DTOs;
 using server.Models;
+using server.Exceptions;
 
 namespace server.Controllers;
 
@@ -11,10 +12,10 @@ namespace server.Controllers;
 [Route("api/[controller]")]
 public class RentalsController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly CarRentalContext _context;
     private readonly IMapper _mapper;
 
-    public RentalsController(ApplicationDbContext context, IMapper mapper)
+    public RentalsController(CarRentalContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -42,7 +43,7 @@ public class RentalsController : ControllerBase
 
         if (rental == null)
         {
-            return NotFound();
+            throw new RentalNotFoundException($"Rental with ID {id} was not found.");
         }
 
         return _mapper.Map<RentalDto>(rental);
@@ -67,7 +68,7 @@ public class RentalsController : ControllerBase
         var rental = await _context.Rentals.FindAsync(id);
         if (rental == null)
         {
-            return NotFound();
+            throw new RentalNotFoundException($"Rental with ID {id} was not found.");
         }
 
         _mapper.Map(updateRentalDto, rental);
@@ -83,7 +84,7 @@ public class RentalsController : ControllerBase
         var rental = await _context.Rentals.FindAsync(id);
         if (rental == null)
         {
-            return NotFound();
+            throw new RentalNotFoundException($"Rental with ID {id} was not found.");
         }
 
         _context.Rentals.Remove(rental);

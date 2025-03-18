@@ -4,6 +4,7 @@ using AutoMapper;
 using server.Data;
 using server.DTOs;
 using server.Models;
+using server.Exceptions;
 
 namespace server.Controllers;
 
@@ -11,10 +12,10 @@ namespace server.Controllers;
 [Route("api/[controller]")]
 public class ReviewsController : ControllerBase
 {
-    private readonly ApplicationDbContext _context;
+    private readonly CarRentalContext _context;
     private readonly IMapper _mapper;
 
-    public ReviewsController(ApplicationDbContext context, IMapper mapper)
+    public ReviewsController(CarRentalContext context, IMapper mapper)
     {
         _context = context;
         _mapper = mapper;
@@ -42,7 +43,7 @@ public class ReviewsController : ControllerBase
 
         if (review == null)
         {
-            return NotFound();
+            throw new ReviewNotFoundException($"Review with ID {id} was not found.");
         }
 
         return _mapper.Map<ReviewDto>(review);
@@ -67,7 +68,7 @@ public class ReviewsController : ControllerBase
         var review = await _context.Reviews.FindAsync(id);
         if (review == null)
         {
-            return NotFound();
+            throw new ReviewNotFoundException($"Review with ID {id} was not found.");
         }
 
         _mapper.Map(updateReviewDto, review);
@@ -83,7 +84,7 @@ public class ReviewsController : ControllerBase
         var review = await _context.Reviews.FindAsync(id);
         if (review == null)
         {
-            return NotFound();
+            throw new ReviewNotFoundException($"Review with ID {id} was not found.");
         }
 
         _context.Reviews.Remove(review);
