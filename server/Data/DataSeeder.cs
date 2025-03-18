@@ -13,10 +13,10 @@ public class DataSeeder : IEntityTypeConfiguration<Car>,
     public void Configure(EntityTypeBuilder<Car> builder)
     {
         builder.HasData(
-            new Car { Id = 1, Brand = "Toyota", Model = "Camry", Year = 2020, DailyRate = 50.00m, IsAvailable = true, Color = "Red" },
-            new Car { Id = 2, Brand = "Honda", Model = "Civic", Year = 2021, DailyRate = 45.00m, IsAvailable = true, Color = "Blue" },
-            new Car { Id = 3, Brand = "BMW", Model = "X5", Year = 2022, DailyRate = 80.00m, IsAvailable = false, Color = "Black" },
-            new Car { Id = 4, Brand = "Mercedes", Model = "C-Class", Year = 2021, DailyRate = 75.00m, IsAvailable = true, Color = "Silver" }
+            new Car { CarId = 1, Make = "Toyota", Model = "Camry", Year = 2020, PricePerDay = 50.00m, Status = CarStatus.Available },
+            new Car { CarId = 2, Make = "Honda", Model = "Civic", Year = 2021, PricePerDay = 45.00m, Status = CarStatus.Available },
+            new Car { CarId = 3, Make = "BMW", Model = "X5", Year = 2022, PricePerDay = 80.00m, Status = CarStatus.Maintenance },
+            new Car { CarId = 4, Make = "Mercedes", Model = "C-Class", Year = 2021, PricePerDay = 75.00m, Status = CarStatus.Rented }
         );
     }
 
