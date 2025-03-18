@@ -11,8 +11,8 @@ using server.Data;
 namespace server.Migrations
 {
     [DbContext(typeof(CarRentalContext))]
-    [Migration("20250318161109_SeedData")]
-    partial class SeedData
+    [Migration("20250318180320_InitialCreate")]
+    partial class InitialCreate
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -92,31 +92,29 @@ namespace server.Migrations
 
             modelBuilder.Entity("server.Models.Customer", b =>
                 {
-                    b.Property<int>("CustomerId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)");
+
                     b.Property<string>("Email")
+                        .IsRequired()
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
 
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)");
-
                     b.Property<string>("Phone")
                         .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)");
+                        .HasColumnType("longtext");
 
-                    b.HasKey("CustomerId");
+                    b.HasKey("Id");
 
                     b.HasIndex("Email")
                         .IsUnique();
@@ -126,41 +124,41 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            CustomerId = 1,
+                            Id = 1,
+                            Address = "",
                             Email = "john@example.com",
-                            FirstName = "John",
-                            LastName = "Doe",
+                            Name = "John",
                             Phone = "+1234567890"
                         },
                         new
                         {
-                            CustomerId = 2,
+                            Id = 2,
+                            Address = "",
                             Email = "jane@example.com",
-                            FirstName = "Jane",
-                            LastName = "Smith",
+                            Name = "Jane",
                             Phone = "+1234567891"
                         },
                         new
                         {
-                            CustomerId = 3,
+                            Id = 3,
+                            Address = "",
                             Email = "mike@example.com",
-                            FirstName = "Mike",
-                            LastName = "Johnson",
+                            Name = "Mike",
                             Phone = "+1234567892"
                         },
                         new
                         {
-                            CustomerId = 4,
+                            Id = 4,
+                            Address = "",
                             Email = "sarah@example.com",
-                            FirstName = "Sarah",
-                            LastName = "Williams",
+                            Name = "Sarah",
                             Phone = "+1234567893"
                         });
                 });
 
             modelBuilder.Entity("server.Models.Payment", b =>
                 {
-                    b.Property<int>("PaymentId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -170,13 +168,20 @@ namespace server.Migrations
                     b.Property<DateTime>("PaymentDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<int>("PaymentMethod")
-                        .HasColumnType("int");
+                    b.Property<string>("PaymentMethod")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
 
                     b.Property<int>("RentalId")
                         .HasColumnType("int");
 
-                    b.HasKey("PaymentId");
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("RentalId");
 
@@ -185,41 +190,45 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            PaymentId = 1,
+                            Id = 1,
                             Amount = 250.00m,
                             PaymentDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethod = 0,
-                            RentalId = 1
+                            PaymentMethod = "CreditCard",
+                            RentalId = 1,
+                            Status = ""
                         },
                         new
                         {
-                            PaymentId = 2,
+                            Id = 2,
                             Amount = 225.00m,
                             PaymentDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethod = 2,
-                            RentalId = 2
+                            PaymentMethod = "PayPal",
+                            RentalId = 2,
+                            Status = ""
                         },
                         new
                         {
-                            PaymentId = 3,
+                            Id = 3,
                             Amount = 375.00m,
                             PaymentDate = new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethod = 1,
-                            RentalId = 3
+                            PaymentMethod = "Cash",
+                            RentalId = 3,
+                            Status = ""
                         },
                         new
                         {
-                            PaymentId = 4,
+                            Id = 4,
                             Amount = 320.00m,
                             PaymentDate = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            PaymentMethod = 0,
-                            RentalId = 4
+                            PaymentMethod = "CreditCard",
+                            RentalId = 4,
+                            Status = ""
                         });
                 });
 
             modelBuilder.Entity("server.Models.Rental", b =>
                 {
-                    b.Property<int>("RentalId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -229,16 +238,21 @@ namespace server.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("RentalEndDate")
+                    b.Property<DateTime>("EndDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTime>("RentalStartDate")
+                    b.Property<DateTime>("StartDate")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<decimal>("TotalPrice")
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)");
+
+                    b.Property<decimal>("TotalAmount")
                         .HasColumnType("decimal(10,2)");
 
-                    b.HasKey("RentalId");
+                    b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
@@ -249,45 +263,49 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            RentalId = 1,
+                            Id = 1,
                             CarId = 1,
                             CustomerId = 1,
-                            RentalEndDate = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentalStartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalPrice = 250.00m
+                            EndDate = new DateTime(2024, 3, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 3, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "",
+                            TotalAmount = 250.00m
                         },
                         new
                         {
-                            RentalId = 2,
+                            Id = 2,
                             CarId = 2,
                             CustomerId = 2,
-                            RentalEndDate = new DateTime(2024, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentalStartDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalPrice = 225.00m
+                            EndDate = new DateTime(2024, 3, 15, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 3, 10, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "",
+                            TotalAmount = 225.00m
                         },
                         new
                         {
-                            RentalId = 3,
+                            Id = 3,
                             CarId = 4,
                             CustomerId = 3,
-                            RentalEndDate = new DateTime(2024, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentalStartDate = new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalPrice = 375.00m
+                            EndDate = new DateTime(2024, 3, 25, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 3, 20, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "",
+                            TotalAmount = 375.00m
                         },
                         new
                         {
-                            RentalId = 4,
+                            Id = 4,
                             CarId = 3,
                             CustomerId = 4,
-                            RentalEndDate = new DateTime(2024, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            RentalStartDate = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
-                            TotalPrice = 320.00m
+                            EndDate = new DateTime(2024, 4, 5, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            StartDate = new DateTime(2024, 4, 1, 0, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "",
+                            TotalAmount = 320.00m
                         });
                 });
 
             modelBuilder.Entity("server.Models.Review", b =>
                 {
-                    b.Property<int>("ReviewId")
+                    b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
@@ -295,7 +313,9 @@ namespace server.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Comment")
-                        .HasColumnType("longtext");
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)");
 
                     b.Property<int>("CustomerId")
                         .HasColumnType("int");
@@ -303,7 +323,10 @@ namespace server.Migrations
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
-                    b.HasKey("ReviewId");
+                    b.Property<DateTime>("ReviewDate")
+                        .HasColumnType("datetime(6)");
+
+                    b.HasKey("Id");
 
                     b.HasIndex("CarId");
 
@@ -314,35 +337,39 @@ namespace server.Migrations
                     b.HasData(
                         new
                         {
-                            ReviewId = 1,
+                            Id = 1,
                             CarId = 1,
                             Comment = "Excellent car, very comfortable!",
                             CustomerId = 1,
-                            Rating = 5
+                            Rating = 5,
+                            ReviewDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            ReviewId = 2,
+                            Id = 2,
                             CarId = 2,
                             Comment = "Good car, but a bit small.",
                             CustomerId = 2,
-                            Rating = 4
+                            Rating = 4,
+                            ReviewDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            ReviewId = 3,
+                            Id = 3,
                             CarId = 4,
                             Comment = "Luxury car, amazing experience!",
                             CustomerId = 3,
-                            Rating = 5
+                            Rating = 5,
+                            ReviewDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         },
                         new
                         {
-                            ReviewId = 4,
+                            Id = 4,
                             CarId = 3,
                             Comment = "Car was in maintenance, but service was good.",
                             CustomerId = 4,
-                            Rating = 3
+                            Rating = 3,
+                            ReviewDate = new DateTime(1, 1, 1, 0, 0, 0, 0, DateTimeKind.Unspecified)
                         });
                 });
 
