@@ -6,11 +6,11 @@ namespace server.Models;
 public class Car
 {
     [Key]
-    public int CarId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(100)]
-    public string Make { get; set; } = string.Empty;
+    public string Brand { get; set; } = string.Empty;
 
     [Required]
     [MaxLength(100)]
@@ -21,10 +21,14 @@ public class Car
 
     [Required]
     [Column(TypeName = "decimal(10,2)")]
-    public decimal PricePerDay { get; set; }
+    public decimal DailyRate { get; set; }
 
     [Required]
-    public CarStatus Status { get; set; } = CarStatus.Available;
+    public bool IsAvailable { get; set; }
+
+    [Required]
+    [MaxLength(100)]
+    public string Color { get; set; } = string.Empty;
 
     // Navigation properties
     public virtual ICollection<Rental> Rentals { get; set; } = new List<Rental>();

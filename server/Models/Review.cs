@@ -6,19 +6,25 @@ namespace server.Models;
 public class Review
 {
     [Key]
-    public int ReviewId { get; set; }
-
-    [Required]
-    public int CustomerId { get; set; }
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+    public int Id { get; set; }
 
     [Required]
     public int CarId { get; set; }
 
     [Required]
+    public int CustomerId { get; set; }
+
+    [Required]
     [Range(1, 5)]
     public int Rating { get; set; }
 
-    public string? Comment { get; set; }
+    [Required]
+    [MaxLength(500)]
+    public string Comment { get; set; } = string.Empty;
+
+    [Required]
+    public DateTime ReviewDate { get; set; }
 
     // Navigation properties
     [ForeignKey("CustomerId")]

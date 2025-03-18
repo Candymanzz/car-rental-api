@@ -5,24 +5,23 @@ namespace server.Models;
 public class Customer
 {
     [Key]
-    public int CustomerId { get; set; }
-
-    [Required]
-    [MaxLength(50)]
-    public string FirstName { get; set; } = string.Empty;
-
-    [Required]
-    [MaxLength(50)]
-    public string LastName { get; set; } = string.Empty;
+    public int Id { get; set; }
 
     [Required]
     [MaxLength(100)]
+    public string Name { get; set; } = string.Empty;
+
+    [Required]
     [EmailAddress]
     public string Email { get; set; } = string.Empty;
 
     [Required]
-    [MaxLength(20)]
+    [Phone]
     public string Phone { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(200)]
+    public string Address { get; set; } = string.Empty;
 
     // Navigation properties
     public virtual ICollection<Rental> Rentals { get; set; } = new List<Rental>();

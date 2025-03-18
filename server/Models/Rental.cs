@@ -6,30 +6,30 @@ namespace server.Models;
 public class Rental
 {
     [Key]
-    public int RentalId { get; set; }
-
-    [Required]
-    public int CustomerId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public int CarId { get; set; }
 
     [Required]
-    public DateTime RentalStartDate { get; set; }
+    public int CustomerId { get; set; }
 
     [Required]
-    public DateTime RentalEndDate { get; set; }
+    public DateTime StartDate { get; set; }
+
+    [Required]
+    public DateTime EndDate { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(10,2)")]
-    public decimal TotalPrice { get; set; }
+    public decimal TotalAmount { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string Status { get; set; } = string.Empty;
 
     // Navigation properties
-    [ForeignKey("CustomerId")]
-    public virtual Customer Customer { get; set; } = null!;
-
-    [ForeignKey("CarId")]
     public virtual Car Car { get; set; } = null!;
-
+    public virtual Customer Customer { get; set; } = null!;
     public virtual ICollection<Payment> Payments { get; set; } = new List<Payment>();
 }

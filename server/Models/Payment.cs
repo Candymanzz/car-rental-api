@@ -6,23 +6,27 @@ namespace server.Models;
 public class Payment
 {
     [Key]
-    public int PaymentId { get; set; }
+    public int Id { get; set; }
 
     [Required]
     public int RentalId { get; set; }
-
-    [Required]
-    public DateTime PaymentDate { get; set; }
 
     [Required]
     [Column(TypeName = "decimal(10,2)")]
     public decimal Amount { get; set; }
 
     [Required]
-    public PaymentMethod PaymentMethod { get; set; }
+    public DateTime PaymentDate { get; set; }
+
+    [Required]
+    [MaxLength(50)]
+    public string PaymentMethod { get; set; } = string.Empty;
+
+    [Required]
+    [MaxLength(50)]
+    public string Status { get; set; } = string.Empty;
 
     // Navigation property
-    [ForeignKey("RentalId")]
     public virtual Rental Rental { get; set; } = null!;
 }
 
