@@ -1,10 +1,11 @@
 namespace server.DTOs;
 
-public record RentalDto(
-    int RentalId,
-    int CustomerId,
-    int CarId,
-    DateTime RentalStartDate,
-    DateTime RentalEndDate,
-    decimal TotalPrice
-);
+public class RentalDto
+{
+    public int RentalId { get; set; }
+    public int CustomerId { get; set; }
+    public int CarId { get; set; }
+    public DateTime RentalStartDate { get; set; }
+    public DateTime RentalEndDate { get; set; }
+    public decimal TotalPrice { get; set; }
+}

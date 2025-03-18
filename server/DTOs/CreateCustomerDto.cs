@@ -1,8 +1,8 @@
 namespace server.DTOs;
 
 public record CreateCustomerDto(
-    string FirstName,
-    string LastName,
+    string Name,
     string Email,
-    string Phone
+    string Phone,
+    string Address
 );

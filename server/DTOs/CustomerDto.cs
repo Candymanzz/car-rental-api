@@ -1,9 +1,10 @@
 namespace server.DTOs;
 
-public record CustomerDto(
-    int CustomerId,
-    string FirstName,
-    string LastName,
-    string Email,
-    string Phone
-);
+public class CustomerDto
+{
+    public int CustomerId { get; set; }
+    public string Name { get; set; } = string.Empty;
+    public string Email { get; set; } = string.Empty;
+    public string Phone { get; set; } = string.Empty;
+    public string Address { get; set; } = string.Empty;
+}

@@ -2,10 +2,11 @@ using server.Models;
 
 namespace server.DTOs;
 
-public record PaymentDto(
-    int PaymentId,
-    int RentalId,
-    DateTime PaymentDate,
-    decimal Amount,
-    PaymentMethod PaymentMethod
-);
+public class PaymentDto
+{
+    public int PaymentId { get; set; }
+    public int RentalId { get; set; }
+    public DateTime PaymentDate { get; set; }
+    public decimal Amount { get; set; }
+    public PaymentMethod PaymentMethod { get; set; }
+}
