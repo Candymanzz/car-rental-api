@@ -21,6 +21,14 @@ public class CarRentalContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
+        // Apply configurations
+        var seeder = new DataSeeder();
+        seeder.Configure(modelBuilder.Entity<Car>());
+        seeder.Configure(modelBuilder.Entity<Customer>());
+        seeder.Configure(modelBuilder.Entity<Rental>());
+        seeder.Configure(modelBuilder.Entity<Payment>());
+        seeder.Configure(modelBuilder.Entity<Review>());
+
         // Configure relationships and constraints
         modelBuilder.Entity<Customer>()
             .HasIndex(c => c.Email)
